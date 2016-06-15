@@ -92,10 +92,18 @@ void loop() {
   else
   {
     left(1);
+    hit();
+    left(4);
+    hit();
     left(1);
-    left(3);
+    hit();
     right(1);
-    left(3);
+    right(1);
+    hit();
+    right(1);
+    hit();
+    right(1);
+    hit();
     FLAG_Home = 0;
   }
 
