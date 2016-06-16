@@ -8,8 +8,8 @@
 int FLAG_Home = 0;
 Servo myservo;  // create servo object to control a servo
 int pos = 0;    // variable to store the servo position
-
-
+int current_pos = 0;//当前位置
+char muisc[12] = {1, 1, 5, 5, 6, 6, 5, 4, 4, 3, 3, 3};
 void setup() {
   Serial.begin(57600);
   myservo.attach(45);  // attaches the servo on pin 9 to the servo object
@@ -65,18 +65,36 @@ void walkBothDirections() {
   stepNow(STEPS_PER_ROTATION);
 }
 
-void left(int number)
+void left(int number)  //左移动
 {
   digitalWrite(DIR, LOW);
   stepNow(1000 * number);
-  hit();
+
 }
-void right(int number)
+void right(int number)  //向右移动
 {
   digitalWrite(DIR, HIGH);
   stepNow(1000 * number);
+
+}
+void movement(int pos_next, int pos_present)  //通过音符直接移动
+{
+  if (pos_next > pos_present)
+    left(pos_next - pos_present);
+  else
+    right(pos_present - pos_next);
+  pos_present = pos_next;
+}
+void movement_hit(int pos_next, int pos_present)
+{
+  if (pos_next > pos_present)
+    left(pos_next - pos_present);
+  else
+    right(pos_present - pos_next);
+  pos_present = pos_next;
   hit();
 }
+
 void loop() {
   //  Serial.println(F("Enable HIGH"));
   //  digitalWrite(ENABLE,HIGH);
@@ -91,6 +109,10 @@ void loop() {
   }
   else
   {
+    for (int i = 0; i < 12; i++)
+    {
+      movement_hit(music[i],0);
+    }
     left(1);
     hit();
     left(4);
